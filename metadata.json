@@ -1,0 +1,8 @@
+{
+  "name": "Selidbe Transport Speed",
+  "description": "Profesionalne selidbe, transport i prevoz u Beogradu i celoj Srbiji.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
