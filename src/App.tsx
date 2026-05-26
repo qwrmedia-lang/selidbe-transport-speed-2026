@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Phone, Truck, ShieldCheck, Clock, CheckCircle2, Star, Box, Home, Briefcase, Wrench, Siren, MapPin, MessageCircle, Menu, X } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, useInView, animate } from 'motion/react';
 
 const stats = [
-  { value: '1000+', label: 'Zadovoljnih klijenata' },
-  { value: '5.0', label: 'Google ocena' },
-  { value: '24/7', label: 'Dostupnost' },
-  { value: '45 min', label: 'Brz dolazak' },
+  { end: 1000, suffix: '+', label: 'Zadovoljnih klijenata', decimals: 0 },
+  { end: 5, suffix: '', label: 'Google ocena', decimals: 1 },
+  { end: 24, suffix: '/7', label: 'Dostupnost', decimals: 0 },
+  { end: 45, suffix: ' min', label: 'Brz dolazak', decimals: 0 },
 ];
 
 const services = [
@@ -39,6 +39,28 @@ const faqs = [
   { q: 'Koliko traje selidba?', a: 'Zavisi od količine stvari i lokacije.' },
   { q: 'Da li radite hitne selidbe?', a: 'Da, hitne selidbe radimo tokom celog dana i noći.' },
 ];
+
+function StatCounter({ end, suffix, decimals = 0 }: { end: number, suffix: string, decimals?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (isInView && ref.current) {
+      const controls = animate(0, end, {
+        duration: 2,
+        ease: "easeOut",
+        onUpdate: (value) => {
+          if (ref.current) {
+            ref.current.textContent = value.toFixed(decimals) + suffix;
+          }
+        }
+      });
+      return () => controls.stop();
+    }
+  }, [isInView, end, suffix, decimals]);
+
+  return <span ref={ref}>0{suffix}</span>;
+}
 
 export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -155,7 +177,9 @@ export default function App() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-12 md:mt-16">
           {stats.map((stat, i) => (
             <div key={i} className="bg-[#101010] p-6 md:p-12 rounded-[20px] text-center border border-white/5">
-              <h3 className="text-3xl sm:text-4xl md:text-6xl font-black text-[#ff1e1e] mb-2">{stat.value}</h3>
+              <h3 className="text-3xl sm:text-4xl md:text-6xl font-black text-[#ff1e1e] mb-2">
+                <StatCounter end={stat.end} suffix={stat.suffix} decimals={stat.decimals} />
+              </h3>
               <p className="text-sm md:text-base text-gray-400 font-medium">{stat.label}</p>
             </div>
           ))}
