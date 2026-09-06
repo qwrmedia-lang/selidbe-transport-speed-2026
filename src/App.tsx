@@ -19,8 +19,8 @@ const services = [
 ];
 
 const pricing = [
-  { title: 'Kombi prevoz', price: 'Od 3000 RSD' },
-  { title: 'Radnici po satu', price: '1200 RSD/h' },
+  { title: 'Kombi prevoz', price: 'Od 2.000 dinara' },
+  { title: 'Radnici po satu', price: '1.000 dinara / h' },
   { title: 'Pucketava folija', price: 'Od 700 RSD' },
   { title: 'Stretch folija', price: 'Od 500 RSD' },
   { title: 'Kutije za pakovanje', price: 'Od 150 RSD' },
